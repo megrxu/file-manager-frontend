@@ -1,43 +1,19 @@
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import ElementUI from 'element-ui'
-import axios from 'axios'
+import App from './App'
+import router from './router'
 import 'element-ui/lib/theme-default/index.css'
-import VueRouter from 'vue-router'
 
-import disks from './components/disks.vue'
-import frame from './components/frame.vue'
-import files from './components/files.vue'
-import home from './components/home.vue'
-import Hello from './components/Hello.vue'
-import App from './App.vue'
-
-Vue.use(VueRouter)
 Vue.use(ElementUI)
 
-const routes = [
-  {
-    path: '/',
-    component: frame,
-    children: [
-      { path: '', component: home },
-      { path: 'disk', component: disks },
-      { path: 'file', component: files },      
-    ],
-  },
-  {
-    path: '/files',
-    component: home,
-  },
-  {
-    path: '/hello/:id',
-    component: Hello,
-  },
-]
+Vue.config.productionTip = false
 
-const router = new VueRouter({
-  routes
-})
-
+/* eslint-disable no-new */
 new Vue({
+  el: '#app',
   router,
-}).$mount('#app')
+  template: '<App/>',
+  components: { App }
+})

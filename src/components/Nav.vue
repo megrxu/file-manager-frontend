@@ -13,7 +13,7 @@
     </el-menu>
     </div></el-col>
   </el-row>
-      <router-view></router-view>
+      <router-view style="height:100%"></router-view>
   
 
   </div>
@@ -21,15 +21,15 @@
 
 <script>
   export default {
-    data() {
+    data () {
       return {
         activeIndex: '1',
         activeIndex2: '1'
-      };
+      }
     },
     methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+      handleSelect (key, keyPath) {
+        console.log(key, keyPath)
       },
       toFile: function () {
         this.$router.push('/file')
@@ -39,7 +39,7 @@
       },
       toHome: function () {
         this.$router.push('/')
-      },
+      }
     }
   }
 </script>
