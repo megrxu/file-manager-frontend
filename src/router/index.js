@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import Hello from '@/components/Hello'
+import Test from '@/components/Test'
 import Home from '@/components/Home'
 import Nav from '@/components/Nav'
+import Explore from '@/components/Explore'
+import Status from '@/components/Status'
+import Manage from '@/components/Manage'
 
 Vue.use(Router)
 
@@ -10,16 +13,17 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
       component: Nav,
       children: [
-        {path: '/heo', component: Home}
-      ]
-    },
-    {
-      path: '/hello',
-      name: 'Hello',
-      component: Home
+        {path: '/', component: Home},
+        {path: '/explore', component: Explore},
+        {path: '/explore/?location', component: Explore},
+        {path: '/manage', component: Manage},
+        {path: '/status', component: Status},
+        {path: '/test', component: Test},
+        {path: '/login', component: Home}
+      ],
+      redirect: 'file'
     }
   ]
 })

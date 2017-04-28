@@ -2,13 +2,13 @@
 <div>
   <el-row>
   <el-col :span="20" :offset="2">
-<h3>Welcome! Ray</h3>
+<h3>Welcome! {{ username }}</h3>
 <el-row :gutter="20">
   <el-col :span="8"><div>
   <el-card class="box-card">
   <div slot="header" class="clearfix">
     <span style="line-height: 36px;">挂载的硬盘</span>
-    <el-button style="float: right;" type="primary" @click="toDisk">查看</el-button>
+    <el-button style="float: right;" type="primary" @click="toStatus">查看</el-button>
   </div>
   <div v-for="disk in diskData" class="text item">
   {{ disk.device }}
@@ -36,11 +36,8 @@
       handleSelect (key, keyPath) {
         console.log(key, keyPath)
       },
-      toFile: function () {
-        this.$router.push('/file')
-      },
-      toDisk: function () {
-        this.$router.push('/disk')
+      toStatus: function () {
+        this.$router.push('/status')
       },
       toHome: function () {
         this.$router.push('/')
@@ -63,7 +60,8 @@
         }, {
           name: 'test.txt',
           location: 'Documents/hexo'
-        }]
+        }],
+        username: 'Ray'
       }
     },
     created: function () {

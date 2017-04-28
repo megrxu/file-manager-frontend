@@ -2,10 +2,11 @@
   <div>
   <el-row>
   <el-col :span="24"><div class="grid-content bg-purple">
-    <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+    <el-menu theme="light" :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect">
     <el-menu-item index="1" @click="toHome">Filemanager</el-menu-item>
-    <el-menu-item index="2" @click="toDisk">Disks</el-menu-item>
-    <el-menu-item index="3" @click="toFile">Files</el-menu-item>            
+    <el-menu-item index="2" @click="toExplore">Explore</el-menu-item>
+    <el-menu-item index="3" @click="toStatus">Status</el-menu-item>
+    <el-menu-item index="4" @click="toManage">Manage</el-menu-item>            
     <el-submenu index="2">
       <template slot="title">Test</template>
       <el-menu-item index="2-1">选项1</el-menu-item>
@@ -14,8 +15,6 @@
     </div></el-col>
   </el-row>
       <router-view style="height:100%"></router-view>
-  
-
   </div>
 </template>
 
@@ -31,11 +30,14 @@
       handleSelect (key, keyPath) {
         console.log(key, keyPath)
       },
-      toFile: function () {
-        this.$router.push('/file')
+      toExplore: function () {
+        this.$router.push('/explore')
       },
-      toDisk: function () {
-        this.$router.push('/disk')
+      toManage: function () {
+        this.$router.push('/manage')
+      },
+      toStatus: function () {
+        this.$router.push('/status')
       },
       toHome: function () {
         this.$router.push('/')
@@ -44,3 +46,8 @@
   }
 </script>
 
+<style>
+  .el-menu{
+    width: 100%;
+  }
+</style>
