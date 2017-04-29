@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import Test from '@/components/Test'
 import Home from '@/components/Home'
 import Nav from '@/components/Nav'
@@ -10,6 +11,7 @@ import Manage from '@/components/Manage'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',

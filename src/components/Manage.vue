@@ -1,3 +1,14 @@
 <template>
-<h1>Manage</h1>
+  <h1>{{ this.disks()}}</h1>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+export default {
+  methods: {
+    ...mapState([
+      'disks'
+    ])
+  }
+}
+</script>
