@@ -27,13 +27,17 @@ const mutations = {
   updateDirs(state, locStr) {
     let baseURL = 'http://localhost:8000'
     axios.get(baseURL + '/file/?location=' + locStr).then(function (response) {
-      state.files = response.data.dirs
+      state.dirs = response.data.dirs
     })
+  },
+  updateLoc(state, locStr) {
+    state.currentLocation = locStr.split('/')
+    state.currentLocation[0] = 'root'
   }
 }
 
 const getters = {
-  // demo: state => state.demo
+  // dirs: state => state.dirs
 }
 
 export default new Vuex.Store({

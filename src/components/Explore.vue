@@ -8,10 +8,10 @@
     </el-col>
     <el-col :span="14">
       <h3>Files</h3>
-      <el-button-group>
-        <el-button icon="arrow-left" @click="back"></el-button>
-        <el-button icon="arrow-right" @click="forward"></el-button>
-      </el-button-group>
+      <el-breadcrumb separator="/" class="margin-top">
+        <el-breadcrumb-item v-for="item in this.currentLocation()" v-bind:key="item.id">
+        <el-button type="text" @click="toDir(item)">{{item}}</el-button></el-breadcrumb-item>
+      </el-breadcrumb>
       <el-input class="margin-bottom margin-top" placeholder="File Location" icon="search" v-model="input" :on-icon-click="handleIconClick">
       </el-input>
       <el-table :data="this.dirs().concat(this.files())" style="width: 100%" @row-click="lookDir" :row-class-name="tableRowClassName">
@@ -52,12 +52,14 @@ export default {
     ...mapState([
       'disks',
       'files',
-      'dirs'
+      'dirs',
+      'currentLocation'
     ]),
     ...mapMutations([
       'updateDisks',
       'updateFiles',
-      'updateDirs'
+      'updateDirs',
+      'updateLoc'
     ]),
     getdata: function (str) {
       this.updateFiles(str)
@@ -68,9 +70,18 @@ export default {
       return !(str.substring(0, 1) === '.')
     },
     lookDir: function (row) {
-      console.log(row)
-      this.$router.push(this.$route.fullPath + '/' + row.name)
+      if (this.dirs().indexOf(row) !== -1) {
+        this.$router.push(this.$route.fullPath + '/' + row.name)
+      } else {
+        this.$router.push(this.$route.fullPath)
+      }
       this.refresh()
+    },
+    toDir: function (item) {
+      console.log(this.currentLocation()[3] === item)
+      console.log(this.currentLocation().indexOf(item))
+      // this.$router.push(loc)
+      // this.refresh
     },
     back: function () {
       this.$router.go(-1)
@@ -83,6 +94,7 @@ export default {
     refresh: function () {
       this.getdata(this.$route.query.location)
       this.input = this.$route.query.location
+      this.updateLoc(this.input)
     },
     toDisk: function (location) {
       this.$router.push('?location=' + location)
@@ -106,8 +118,13 @@ export default {
     }
   },
   created: function () {
-    this.input = this.$route.query.location
+    if (this.$route.fullPath === 'explore') {
+      this.input = this.$route.query.location
+      this.updateDirs(this.input)
+      this.updateFiles(this.input)
+    }
     this.updateDisks()
+    this.updateLoc(this.input)
   }
 }
 </script>

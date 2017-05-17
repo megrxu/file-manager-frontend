@@ -11,7 +11,9 @@
                   <span style="line-height: 36px;">Mounted Disks</span>
                   <el-button style="float: right;" type="default" @click="toStatus">Explore</el-button>
                 </div>
-                <div v-for="disk in this.disks()"><el-button type="text" @click="toDisk(disk.mount_point)">{{disk.device}}</el-button></div>
+                <div v-for="disk in this.disks()">
+                  <el-button type="text" @click="toDisk(disk.mount_point)">{{disk.device}}</el-button>
+                </div>
               </el-card>
             </div>
           </el-col>
@@ -21,7 +23,7 @@
                 <div slot="header" class="clearfix">
                   <span style="line-height: 36px;">Recent Files</span>
                 </div>
-                <div v-for="file in recentFile" class="text item">
+                <div v-for="file in recentFiles" class="text item">
                   <div>{{ file.name }}</div>
                   <div>{{ file.location }}</div>
                 </div>
@@ -35,56 +37,60 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-export default {
-  methods: {
-    ...mapState([
-      'disks'
-    ]),
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath)
+  import {mapState} from 'vuex'
+  export default {
+    methods: {
+      ...mapState([
+        'disks'
+      ]),
+      handleSelect(key, keyPath) {
+        // console.log(key, keyPath)
+      },
+      toStatus: function () {
+        this.$router.push('/status')
+      },
+      toHome: function () {
+        this.$router.push('/')
+      },
+      toDisk: function (location) {
+        this.$router.push('explore/?location=' + location)
+        this.refresh()
+      }
     },
-    toStatus: function () {
-      this.$router.push('/status')
+    data() {
+      return {
+        username: 'Ray',
+        recentFiles: [{
+          name: 'haha',
+          location: 'awd'
+        }]
+      }
     },
-    toHome: function () {
-      this.$router.push('/')
-    },
-    toDisk: function (location) {
-      this.$router.push('explore/?location=' + location)
-      this.refresh()
+    created: function () {
     }
-  },
-  data() {
-    return {
-      username: 'Ray'
-    }
-  },
-  created: function () {
   }
-}
 </script>
 
 <style>
-.text {
-  font-size: 14px;
-}
+  .text {
+    font-size: 14px;
+  }
 
-.item {
-  padding: 12px 0;
-}
+  .item {
+    padding: 12px 0;
+  }
 
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
 
-.clearfix:after {
-  clear: both
-}
+  .clearfix:after {
+    clear: both
+  }
 
-.box-card {
-  height: 240px;
-}
+  .box-card {
+    height: 240px;
+  }
 </style>

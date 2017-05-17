@@ -13,9 +13,9 @@
                 <el-progress type="circle" :percentage="disk.percent"></el-progress>
               </el-col>
               <el-col :span="10" class="info">
-                <span>{{ convertSize(disk.size - disk.used_size) }} Available</span>
-                <span>{{ convertSize(disk.size) }} Total</span>
-                <el-button style="margin-top:32px" type="default" @click="toDisk(disk.mount_point)">Explore</el-button>
+                <p>{{ convertSize(disk.size - disk.used_size) }} Available</p>
+                <p>{{ convertSize(disk.size) }} Total</p>
+                <el-button style="margin-top:16px" type="default" @click="toDisk(disk.mount_point)">Explore</el-button>
               </el-col>
               <div>
               </div>
