@@ -3,7 +3,7 @@
     <el-col :span="20" :offset="2">
       <h3>Your disks</h3>
       <el-row :gutter="20">
-        <el-col :span="8" v-for="disk in this.disks()" v-bind:key="disk.id">
+        <el-col :span="8" v-for="disk in this.disks()" v-bind:key="disk.id" v-if="disk.is_shown">
           <div>
             <el-card class="box-card">
               <div slot="header" class="clearfix">
@@ -120,7 +120,9 @@ export default {
   },
   created: function () {
     this.updateDisks()
-    console.log('haha')
+    // console.log('haha')
+  },
+  computed: function () {
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <el-row class="main">
     <el-col :span="4" :offset="2">
       <h3>Your disks</h3>
-      <div v-for="disk in this.disks()">
+      <div v-for="disk in this.disks()" v-if="disk.is_shown">
         <el-button type="text" @click="toDisk(disk.mount_point)">{{disk.device}}</el-button>
       </div>
     </el-col>
@@ -78,8 +78,8 @@ export default {
       this.refresh()
     },
     toDir: function (item) {
-      console.log(this.currentLocation()[3] === item)
-      console.log(this.currentLocation().indexOf(item))
+      // console.log(this.currentLocation()[3] === item)
+      // console.log(this.currentLocation().indexOf(item))
       // this.$router.push(loc)
       // this.refresh
     },

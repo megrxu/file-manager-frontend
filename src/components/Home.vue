@@ -11,7 +11,7 @@
                   <span style="line-height: 36px;">Mounted Disks</span>
                   <el-button style="float: right;" type="default" @click="toStatus">Explore</el-button>
                 </div>
-                <div v-for="disk in this.disks()">
+                <div v-for="disk in this.disks()" v-if="disk.is_shown">
                   <el-button type="text" @click="toDisk(disk.mount_point)">{{disk.device}}</el-button>
                 </div>
               </el-card>

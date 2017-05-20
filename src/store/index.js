@@ -11,21 +11,20 @@ const state = {
   dirs: []
 }
 
+const baseURL = 'http://localhost:8000'
+
 const mutations = {
   updateDisks(state) {
-    let baseURL = 'http://localhost:8000'
     axios.get(baseURL + '/disk/').then(function (response) {
       state.disks = response.data
     })
   },
   updateFiles(state, locStr) {
-    let baseURL = 'http://localhost:8000'
     axios.get(baseURL + '/file/?location=' + locStr).then(function (response) {
       state.files = response.data.files
     })
   },
   updateDirs(state, locStr) {
-    let baseURL = 'http://localhost:8000'
     axios.get(baseURL + '/file/?location=' + locStr).then(function (response) {
       state.dirs = response.data.dirs
     })

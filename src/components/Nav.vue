@@ -8,10 +8,10 @@
             <el-menu-item index="2" @click="toExplore">Explore</el-menu-item>
             <el-menu-item index="3" @click="toStatus">Status</el-menu-item>
             <el-menu-item index="4" @click="toManage">Manage</el-menu-item>
-            <el-submenu index="2">
+            <!--<el-submenu index="2">
               <template slot="title">Test</template>
               <el-menu-item index="2-1">选项</el-menu-item>
-            </el-submenu>
+            </el-submenu>-->
           </el-menu>
         </div>
       </el-col>
@@ -42,7 +42,7 @@ export default {
       'updateDisks'
     ]),
     handleSelect(key, keyPath) {
-      console.log(key, keyPath)
+      // console.log(key, keyPath)
     },
     toExplore: function () {
       this.$router.push('/explore')
