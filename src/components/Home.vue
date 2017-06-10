@@ -2,7 +2,7 @@
   <div>
     <el-row class="main">
       <el-col :span="20" :offset="2">
-        <h3>Welcome! {{ username }}</h3>
+        <h3>Welcome! {{ this.currentUser() }}</h3>
         <el-row :gutter="20">
           <el-col :span="8">
             <div>
@@ -33,64 +33,69 @@
         </el-row>
       </el-col>
     </el-row>
+  
   </div>
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  export default {
-    methods: {
-      ...mapState([
-        'disks'
-      ]),
-      handleSelect(key, keyPath) {
-        // console.log(key, keyPath)
-      },
-      toStatus: function () {
-        this.$router.push('/status')
-      },
-      toHome: function () {
-        this.$router.push('/')
-      },
-      toDisk: function (location) {
-        this.$router.push('explore/?location=' + location)
-        this.refresh()
-      }
+import { mapState } from 'vuex'
+export default {
+  methods: {
+    ...mapState([
+      'disks',
+      'currentUser'
+    ]),
+    handleSelect(key, keyPath) {
+      // console.log(key, keyPath)
     },
-    data() {
-      return {
-        username: 'Ray',
-        recentFiles: [{
-          name: 'haha',
-          location: 'awd'
-        }]
-      }
+    toStatus: function () {
+      this.$router.push('/status')
     },
-    created: function () {
+    toHome: function () {
+      this.$router.push('/')
+    },
+    toDisk: function (location) {
+      this.$router.push('explore/?location=' + location)
+      this.refresh()
     }
+  },
+  data() {
+    return {
+      recentFiles: [{
+        name: 'haha',
+        location: 'awd'
+      }]
+    }
+  },
+  created: function () {
   }
+}
 </script>
 
 <style>
-  .text {
-    font-size: 14px;
-  }
+.text {
+  font-size: 14px;
+}
 
-  .item {
-    padding: 12px 0;
-  }
+.item {
+  padding: 12px 0;
+}
 
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
 
-  .clearfix:after {
-    clear: both
-  }
+.clearfix:after {
+  clear: both
+}
 
-  .box-card {
-    height: 240px;
-  }
+.box-card {
+  height: 240px;
+}
+
+.login {
+  position: fixed;
+}
 </style>

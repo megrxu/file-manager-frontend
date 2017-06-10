@@ -10,7 +10,7 @@
       <h3>Files</h3>
       <el-breadcrumb separator="/" class="margin-top">
         <el-breadcrumb-item v-for="item in this.currentLocation()" v-bind:key="item.id">
-        <el-button type="text" @click="toDir(item)">{{item}}</el-button></el-breadcrumb-item>
+        {{item}}</el-breadcrumb-item>
       </el-breadcrumb>
       <el-input class="margin-bottom margin-top" placeholder="File Location" icon="search" v-model="input" :on-icon-click="handleIconClick">
       </el-input>
@@ -76,6 +76,9 @@ export default {
         this.$router.push(this.$route.fullPath)
       }
       this.refresh()
+    },
+    viewFile: function (row) {
+
     },
     toDir: function (item) {
       // console.log(this.currentLocation()[3] === item)

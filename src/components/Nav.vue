@@ -3,19 +3,33 @@
     <el-row>
       <el-col :span="24">
         <div>
-          <el-menu theme="light" :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect">
+          <el-menu theme="light" class="el-menu" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1" @click="toHome">Filemanager</el-menu-item>
             <el-menu-item index="2" @click="toExplore">Explore</el-menu-item>
             <el-menu-item index="3" @click="toStatus">Status</el-menu-item>
             <el-menu-item index="4" @click="toManage">Manage</el-menu-item>
+            <el-menu-item index="5" style="float: right; margin-right:24px" @click="showLoginDialog">{{ login_text }}</el-menu-item>
             <!--<el-submenu index="2">
-              <template slot="title">Test</template>
-              <el-menu-item index="2-1">选项</el-menu-item>
-            </el-submenu>-->
+                                                    <template slot="title">Test</template>
+                                                    <el-menu-item index="2-1">选项</el-menu-item>
+                                                  </el-submenu>-->
           </el-menu>
         </div>
       </el-col>
     </el-row>
+    <el-dialog title="Login" :visible.sync="dialogFormVisible" size="tiny">
+      <el-form v-model="form">
+        <el-form-item label="Username" :label-width="formLabelWidth">
+          <el-input v-model="form.username" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Password" :label-width="formLabelWidth">
+          <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="login">Log In</el-button>
+      </div>
+    </el-dialog>
     <router-view style="height:100%"></router-view>
   </div>
 </template>
@@ -25,21 +39,36 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      activeIndex: '1',
-      activeIndex2: '1'
+      formLabelWidth: '80px',
+      form: {
+        'username': '',
+        'password': ''
+      },
+      username: '',
+      dialogFormVisible: true
     }
   },
   computed: {
     activeIndex: function () {
       return this.$route.path === ''
+    },
+    login_text: function () {
+      if (this.loginState()) {
+        return this.currentUser()
+      } else {
+        return 'Login'
+      }
     }
   },
   methods: {
     ...mapState([
-      'disks'
+      'disks',
+      'currentUser',
+      'loginState'
     ]),
     ...mapMutations([
-      'updateDisks'
+      'updateDisks',
+      'login_request'
     ]),
     handleSelect(key, keyPath) {
       // console.log(key, keyPath)
@@ -55,10 +84,20 @@ export default {
     },
     toHome: function () {
       this.$router.push('/')
+    },
+    login: function () {
+      this.login_request(this.form)
+      this.updateDisks()
+      if (this.loginState) {
+        this.dialogFormVisible = false
+      }
+      this.$router.push('/')
+    },
+    showLoginDialog: function () {
+      this.dialogFormVisible = true
     }
   },
   created: function () {
-    this.updateDisks()
   }
 }
 </script>
