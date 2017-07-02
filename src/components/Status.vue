@@ -1,7 +1,7 @@
 <template>
   <el-row class="main">
     <el-col :span="20" :offset="2">
-      <h3>Your disks</h3>
+      <h3>Mounted Disks</h3>
       <el-row :gutter="20">
         <el-col :span="8" v-for="disk in this.disks()" v-bind:key="disk.id" v-if="disk.is_shown">
           <div>
@@ -25,21 +25,27 @@
       </el-row>
       <h3>System Status</h3>
       <el-row :gutter="20">
-        <el-col :span="8" v-for="disk in this.disks()" v-bind:key="disk.id">
+        <el-col :span="8">
           <div>
             <el-card class="box-card">
               <div slot="header" class="clearfix">
-                <span style="line-height: 36px;">{{ disk.device }}</span>
+                <span style="line-height: 36px;">CPU Percent</span>
               </div>
               <el-col :span="14">
-                <el-progress type="circle" :percentage="disk.percent"></el-progress>
+                <el-progress type="circle" :percentage="system().cpu"></el-progress>
               </el-col>
-              <el-col :span="10" class="info">
-                <span>{{ convertSize(disk.size - disk.used_size) }} Available</span>
-                <span>{{ convertSize(disk.size) }} Total</span>
-              </el-col>
-              <div>
+            </el-card>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div>
+            <el-card class="box-card">
+              <div slot="header" class="clearfix">
+                <span style="line-height: 36px;">RAM Percent</span>
               </div>
+              <el-col :span="14">
+                <el-progress type="circle" :percentage="system().ram"></el-progress>
+              </el-col>
             </el-card>
           </div>
         </el-col>
@@ -90,10 +96,12 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   methods: {
     ...mapState([
-      'disks'
+      'disks',
+      'system'
     ]),
     ...mapMutations([
-      'updateDisks'
+      'updateDisks',
+      'updateSystem'
     ]),
     getPercent: function () {
       return 28
@@ -120,9 +128,10 @@ export default {
   },
   created: function () {
     this.updateDisks()
-    // console.log('haha')
+    this.updateSystem()
+    console.log(this.system())
   },
-  computed: function () {
+  computed: {
   }
 }
 </script>

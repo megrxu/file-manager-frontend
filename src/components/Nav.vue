@@ -4,15 +4,15 @@
       <el-col :span="24">
         <div>
           <el-menu theme="light" class="el-menu" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="1" @click="toHome">Filemanager</el-menu-item>
+            <el-menu-item index="1" @click="toHome">Home</el-menu-item>
             <el-menu-item index="2" @click="toExplore">Explore</el-menu-item>
             <el-menu-item index="3" @click="toStatus">Status</el-menu-item>
             <el-menu-item index="4" @click="toManage">Manage</el-menu-item>
             <el-menu-item index="5" style="float: right; margin-right:24px" @click="showLoginDialog">{{ login_text }}</el-menu-item>
             <!--<el-submenu index="2">
-                                                    <template slot="title">Test</template>
-                                                    <el-menu-item index="2-1">选项</el-menu-item>
-                                                  </el-submenu>-->
+                                                                  <template slot="title">Test</template>
+                                                                  <el-menu-item index="2-1">选项</el-menu-item>
+                                                                </el-submenu>-->
           </el-menu>
         </div>
       </el-col>
@@ -45,7 +45,7 @@ export default {
         'password': ''
       },
       username: '',
-      dialogFormVisible: true
+      dialogFormVisible: false
     }
   },
   computed: {
@@ -53,8 +53,8 @@ export default {
       return this.$route.path === ''
     },
     login_text: function () {
-      if (this.loginState()) {
-        return this.currentUser()
+      if (this.currentUser() !== ' ') {
+        return this.currentUser().toUpperCase()
       } else {
         return 'Login'
       }
@@ -68,7 +68,10 @@ export default {
     ]),
     ...mapMutations([
       'updateDisks',
-      'login_request'
+      'login_request',
+      'updateLoginState',
+      'updateRecentFiles',
+      'updateDeletedFiles'
     ]),
     handleSelect(key, keyPath) {
       // console.log(key, keyPath)
@@ -87,17 +90,27 @@ export default {
     },
     login: function () {
       this.login_request(this.form)
-      this.updateDisks()
-      if (this.loginState) {
+      if (this.loginState() === 1) {
         this.dialogFormVisible = false
+        this.updateDisks()
+        this.updateRecentFiles()
+        this.updateDeletedFiles()
       }
-      this.$router.push('/')
     },
     showLoginDialog: function () {
       this.dialogFormVisible = true
+    },
+    checkLoginState: function () {
+      if (this.loginState() !== 1) {
+        this.dialogFormVisible = true
+      } else {
+        this.updateDisks()
+      }
     }
   },
   created: function () {
+    this.updateLoginState()
+    this.checkLoginState()
   }
 }
 </script>

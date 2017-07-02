@@ -2,7 +2,7 @@
   <div>
     <el-row class="main">
       <el-col :span="20" :offset="2">
-        <h3>Welcome! {{ this.currentUser() }}</h3>
+        <h3>Welcome! {{ this.currentUser()[0].toUpperCase() + this.currentUser().slice(1) }}</h3>
         <el-row :gutter="20">
           <el-col :span="8">
             <div>
@@ -11,21 +11,38 @@
                   <span style="line-height: 36px;">Mounted Disks</span>
                   <el-button style="float: right;" type="default" @click="toStatus">Explore</el-button>
                 </div>
-                <div v-for="disk in this.disks()" v-if="disk.is_shown">
-                  <el-button type="text" @click="toDisk(disk.mount_point)">{{disk.device}}</el-button>
+                <div v-for="disk in currentDisks" v-if="disk.is_shown" v-bind:key="disk.id">
+                  <el-button type="text" @click="toDisk(disk.mount_point)" style="margin-bottom:8px">{{disk.device}}</el-button>
                 </div>
               </el-card>
             </div>
           </el-col>
           <el-col :span="8">
             <div>
-              <el-card class="box-card">
+              <el-card class="box-card" style="overflow-y: scroll">
                 <div slot="header" class="clearfix">
                   <span style="line-height: 36px;">Recent Files</span>
                 </div>
-                <div v-for="file in recentFiles" class="text item">
-                  <div>{{ file.name }}</div>
-                  <div>{{ file.location }}</div>
+                <div>
+                  <div v-for="file in this.recentFiles()" class="text item" v-bind:key="file.id">
+                    <div style="font-weight:900;">{{ file.filename }}</div>
+                    <div style="font-weight:100; color:#aaa;line-height:1.5rem">{{ file.date }}</div>
+                  </div>
+                </div>
+              </el-card>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div>
+              <el-card class="box-card" style="overflow-y: scroll">
+                <div slot="header" class="clearfix">
+                  <span style="line-height: 36px;">Recycle Bin</span>
+                </div>
+                <div>
+                  <div v-for="file in this.deletedFiles()" class="text item" v-bind:key="file.id">
+                    <div style="font-weight:900;">{{ file.filename }}</div>
+                    <div style="font-weight:100; color:#aaa;line-height:1.5rem">{{ file.date }}</div>
+                  </div>
                 </div>
               </el-card>
             </div>
@@ -38,12 +55,20 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   methods: {
     ...mapState([
       'disks',
-      'currentUser'
+      'currentUser',
+      'loginState',
+      'recentFiles',
+      'deletedFiles'
+    ]),
+    ...mapMutations([
+      'updateDisks',
+      'updateRecentFiles',
+      'updateDeletedFiles'
     ]),
     handleSelect(key, keyPath) {
       // console.log(key, keyPath)
@@ -57,17 +82,29 @@ export default {
     toDisk: function (location) {
       this.$router.push('explore/?location=' + location)
       this.refresh()
+    },
+    toFile: function (location) {
+      this.$router.push('explore/?location=' + location)
+      this.refresh()
     }
   },
   data() {
     return {
-      recentFiles: [{
-        name: 'haha',
-        location: 'awd'
-      }]
     }
   },
   created: function () {
+    this.updateDisks()
+    this.updateRecentFiles()
+    this.updateDeletedFiles()
+  },
+  computed: {
+    currentDisks: function () {
+      if (this.loginState()) {
+        return this.disks()
+      } else {
+        return []
+      }
+    }
   }
 }
 </script>
