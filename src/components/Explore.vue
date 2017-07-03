@@ -14,7 +14,7 @@
       </el-breadcrumb>
       <el-input class="margin-bottom margin-top" placeholder="File Location" icon="search" v-model="input" :on-icon-click="handleIconClick">
       </el-input>
-      <el-table :data="this.dirs().concat(this.files())" style="width: 100%" @row-click="lookDir" :row-class-name="tableRowClassName" empty-text='No Data'>
+      <el-table :data="this.dirs().concat(this.files())" style="width: 100%" @row-click="lookDir" :row-class-name="tableRowClassName" empty-text='No Data' class="margin-bottom">
         <el-table-column prop="name" label="Name" sortable :filters="[{ text: 'Donnot hide hidden files', value: '1' }]" :filter-method="filterTag">
         </el-table-column>
         <el-table-column prop="size" label="Size or amount" sortable>
@@ -27,8 +27,8 @@
       <hr>
       <div style="font-weight:900;line-height:24px;margin-top: 24px;margin-bottom: 8px">Content: </div>
       <div style="">
-        <img v-if="showimage" v-bind:src="imgsrc" class="image" style="max-width: 160px">
-        <el-input :readonly="!editable" type="textarea" autosize placeholder="Enter" v-model="content" v-if="!showimage">
+        <img v-if="showimage" v-bind:src="imgsrc" class="image" style="max-width: 240px">
+        <el-input :readonly="!editable" type="textarea" autosize placeholder="Enter" v-model="content_edit" v-if="!showimage">
         </el-input>
       </div>
       <div style="margin-top: 24px;padding-bottom: 24px;">
@@ -157,9 +157,10 @@ export default {
           data: qs.stringify({
             'location': this.file().name,
             'action': 'edit',
-            'content': this.content
+            'content': this.content_edit
           })
         })
+        console.log(this.content)
         this.$message({
           type: 'success',
           message: 'Change Saved~'
@@ -194,8 +195,6 @@ export default {
       })
     },
     deletefile: function () {
-      this.dialogFormVisible = true
-      this.editable = false
       this.$confirm('Would you like to delete the file?', 'Be careful', {
         confirmButtonText: 'Yes',
         cancelButtonText: 'Cancel',
@@ -215,6 +214,8 @@ export default {
           type: 'success',
           message: 'Moved to Recycle Bin~'
         })
+        this.dialogFormVisible = true
+        this.editable = false
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -228,9 +229,9 @@ export default {
       input: '',
       dialogFormVisible: false,
       editable: false,
-      showimage: false,
       imgsrc: '',
       downsrc: '',
+      content_edit: this.content,
       baseURL: 'https://api.xuguorui.xyz'
     }
   },
@@ -254,6 +255,11 @@ export default {
       } else {
         return 'No Preview'
       }
+    },
+    showimage: function () {
+      this.content_edit = this.content
+      let type = this.file().type.split('/')[0]
+      return (type === 'image')
     }
   }
 }

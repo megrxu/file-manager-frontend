@@ -37,6 +37,7 @@
               <el-card class="box-card" style="overflow-y: scroll">
                 <div slot="header" class="clearfix">
                   <span style="line-height: 36px;">Recycle Bin</span>
+                  <el-button style="float: right;" type="default" @click="toManage">Explore</el-button>
                 </div>
                 <div>
                   <div v-for="file in this.deletedFiles()" class="text item" v-bind:key="file.id">
@@ -71,13 +72,15 @@ export default {
       'updateDeletedFiles'
     ]),
     handleSelect(key, keyPath) {
-      // console.log(key, keyPath)
     },
     toStatus: function () {
       this.$router.push('/status')
     },
     toHome: function () {
       this.$router.push('/')
+    },
+    toManage: function () {
+      this.$router.push('/manage')
     },
     toDisk: function (location) {
       this.$router.push('explore/?location=' + location)

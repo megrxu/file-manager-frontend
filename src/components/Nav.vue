@@ -64,14 +64,20 @@ export default {
     ...mapState([
       'disks',
       'currentUser',
-      'loginState'
+      'loginState',
+      'file',
+      'files',
+      'dirs'
     ]),
     ...mapMutations([
       'updateDisks',
       'login_request',
       'updateLoginState',
       'updateRecentFiles',
-      'updateDeletedFiles'
+      'updateDeletedFiles',
+      'updateSystem',
+      'updateDirs',
+      'updateLoc'
     ]),
     handleSelect(key, keyPath) {
       // console.log(key, keyPath)
@@ -80,12 +86,14 @@ export default {
       this.$router.push('/explore')
     },
     toManage: function () {
+      this.updateDeletedFiles()
       this.$router.push('/manage')
     },
     toStatus: function () {
       this.$router.push('/status')
     },
     toHome: function () {
+      this.updateSystem()
       this.$router.push('/')
     },
     login: function () {
